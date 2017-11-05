@@ -29,38 +29,39 @@ for row in initialData:
 #     if lastName not in lastNames.values():
 #         lastNames[lastName] = len(lastNames) - 1
 #
-# l = [0] * len(lastNames)
 # for row in data:
 #     lastName = row[2].split(" ")[0]
-#     k = l
-#     k[lastNames[lastName]] = 1
-#     row[1:1] = k
-#
+#     l = [0] * len(lastNames)
+#     l[lastNames[lastName]] = 1
+#     row.extend(l)
 
 
-# cabin into #deckLetters-dimensional vector
+
+#cabin into #deckLetters-dimensional vector
 # deckLetters = {}
 # for row in data:
-#     cabin = row[9]
-#     deckLetter = "_"
+#     cabin = str(row[9])
+#     deckLetter = '_'
 #     if len(cabin) > 0:
 #         deckLetter = cabin[0]
 #     if deckLetter not in deckLetters.values():
 #         deckLetters[deckLetter] = len(deckLetters) - 1
 #
-# cabinVector = [0] * len(deckLetters)
 # for row in data:
-#     cabin = row[9]
+#     cabinVector = [0] * len(deckLetters)
+#     cabin = str(row[9])
 #     deckLetter = "_"
 #     cabinNumber = 1
 #     if len(cabin) > 0:
 #         deckLetter = cabin[0]
-#         cabin = cabin[1:]
+#         cabin = cabin.split(' ')
+#         cabin = cabin[0][1:]
+#         if cabin == '':
+#             cabin = '0'
 #         cabinNumber = int(cabin)
 #
-#     cbn = cabinVector
-#     cbn[deckLetters[deckLetter]] = cabinNumber
-#     row[1:1] = cbn
+#     cabinVector[deckLetters[deckLetter]] = cabinNumber
+#     row.extend(cabinVector)
 
 # represent class as 3 dimensional vector
 for row in data:
