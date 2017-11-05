@@ -22,6 +22,76 @@ for row in initialData:
     data.append([x for i, x in enumerate(row) if i != 1])
     target.append(row[1])
 
+# extract last name as #lastNames-dimensional vector
+# lastNames = {}
+# for row in data:
+#     lastName = row[2].split(" ")[0]
+#     if lastName not in lastNames.values():
+#         lastNames[lastName] = len(lastNames) - 1
+#
+# l = [0] * len(lastNames)
+# for row in data:
+#     lastName = row[2].split(" ")[0]
+#     k = l
+#     k[lastNames[lastName]] = 1
+#     row[1:1] = k
+#
+
+
+# cabin into #deckLetters-dimensional vector
+# deckLetters = {}
+# for row in data:
+#     cabin = row[9]
+#     deckLetter = "_"
+#     if len(cabin) > 0:
+#         deckLetter = cabin[0]
+#     if deckLetter not in deckLetters.values():
+#         deckLetters[deckLetter] = len(deckLetters) - 1
+#
+# cabinVector = [0] * len(deckLetters)
+# for row in data:
+#     cabin = row[9]
+#     deckLetter = "_"
+#     cabinNumber = 1
+#     if len(cabin) > 0:
+#         deckLetter = cabin[0]
+#         cabin = cabin[1:]
+#         cabinNumber = int(cabin)
+#
+#     cbn = cabinVector
+#     cbn[deckLetters[deckLetter]] = cabinNumber
+#     row[1:1] = cbn
+
+# represent class as 3 dimensional vector
+for row in data:
+    cl = [0, 0, 0]
+    cl[int(row[1]) - 1] = 1
+    row.extend(cl)
+
+# male female
+for row in data:
+    if row[3] == "male":
+        row[3] = 0
+    else:
+        row[3] = 1
+
+# embarked as 3 dimensional vector
+for row in data:
+    emb = [0, 0, 0]
+    if row[10] == "C":
+        emb[0] = 1
+    elif row[10] == "Q":
+        emb[1] = 1
+    elif row[10] == "S":
+        emb[2] = 1
+    row.extend(emb)
+
+originalData = data
+data = []
+# remove passenger-id,class,name,ticket,cabin,embarked
+for idx, row in enumerate(originalData):
+    data.append([x for i, x in enumerate(row) if i != 0 and i != 1 and i != 2 and i != 7 and i != 9 and i != 10])
+
 # todo add value indicating length of name
 
 for row in data:
@@ -32,14 +102,14 @@ for row in data:
             row[idx] = abs(hash(col)) % (10 ** 8)
 
 # split data into test and training set
-half = len(data) // 2
+half = len(data) * 9 // 10
 trainingData = data[:half]
 trainingTarget = target[:half]
 testData = data[half:]
 testTarget = target[half:]
 
 # train
-clf = MLPClassifier(max_iter=1000)
+clf = MLPClassifier(hidden_layer_sizes=(20, 10), solver='lbfgs', activation='logistic')
 clf.fit(trainingData, trainingTarget)
 
 # test
